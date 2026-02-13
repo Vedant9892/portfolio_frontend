@@ -90,18 +90,27 @@ export default function Contact() {
   ].filter((card) => card.value); // Only show cards with values
 
   return (
-    <div className="mx-auto max-w-content px-4 py-16 sm:px-6">
+    <div className="mx-auto max-w-content px-4 py-20 sm:px-6">
       {/* Hero Section */}
       <motion.div
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="mb-12 text-center"
+        transition={{ duration: 0.4 }}
+        className="mb-16 text-center"
       >
-        <h1 className="mb-3 text-3xl font-bold text-text sm:text-4xl">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary"
+        >
+          <div className="h-2 w-2 animate-pulse rounded-full bg-primary"></div>
+          Available for new opportunities
+        </motion.div>
+        <h1 className="mb-4 text-4xl font-bold tracking-tight text-text sm:text-5xl lg:text-6xl">
           Let&apos;s Connect
         </h1>
-        <p className="mx-auto max-w-2xl text-text-muted">
+        <p className="mx-auto max-w-2xl text-lg leading-relaxed text-text-muted">
           Have a project in mind or want to collaborate? I&apos;m always open to
           discussing new opportunities and interesting ideas.
         </p>
@@ -117,7 +126,7 @@ export default function Contact() {
           variants={container}
           initial="hidden"
           animate="visible"
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
         >
           {contactCards.map((card) => {
             const Icon = card.icon;
@@ -125,52 +134,58 @@ export default function Contact() {
               <motion.div
                 key={card.id}
                 variants={cardMotion}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="group relative rounded-xl border border-border bg-surface p-6 shadow-sm transition-shadow hover:shadow-md"
+                whileHover={{ y: -6, scale: 1.03 }}
+                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                className="group relative overflow-hidden rounded-2xl border border-border bg-surface p-8 shadow-lg transition-all hover:border-primary/30 hover:shadow-2xl"
               >
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="rounded-lg bg-primary/10 p-2.5 text-primary transition-colors group-hover:bg-primary/20">
-                    <Icon className="h-5 w-5" />
+                <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-primary/5 transition-transform group-hover:scale-150"></div>
+                <div className="relative">
+                  <div className="mb-6 flex items-center gap-4">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary shadow-lg transition-all group-hover:scale-110 group-hover:bg-primary group-hover:text-white group-hover:shadow-xl">
+                      <Icon className="h-7 w-7" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-text">{card.title}</h2>
+                      <p className="text-sm text-text-muted">{card.description}</p>
+                    </div>
                   </div>
-                  <h2 className="text-lg font-semibold text-text">{card.title}</h2>
+
+                  {card.href ? (
+                    <a
+                      href={card.href}
+                      target={card.id === 'email' ? undefined : '_blank'}
+                      rel={card.id === 'email' ? undefined : 'noopener noreferrer'}
+                      className="mb-4 block break-all text-sm font-semibold text-primary transition-colors hover:text-primary/80"
+                    >
+                      {card.value}
+                    </a>
+                  ) : (
+                    <p className="mb-4 break-all text-sm font-medium text-text-muted">
+                      {card.value}
+                    </p>
+                  )}
+
+                  {card.showCopy && card.value && (
+                    <motion.button
+                      onClick={handleCopyEmail}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-border bg-background px-4 py-3 text-sm font-semibold text-text shadow-sm transition-all hover:border-primary hover:bg-primary/5 hover:text-primary"
+                    >
+                      {copied ? (
+                        <>
+                          <Check className="h-4 w-4" />
+                          <span>Copied to clipboard!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-4 w-4" />
+                          <span>Copy Email Address</span>
+                        </>
+                      )}
+                    </motion.button>
+                  )}
                 </div>
-
-                <p className="mb-4 text-sm text-text-muted">{card.description}</p>
-
-                {card.href ? (
-                  <a
-                    href={card.href}
-                    target={card.id === 'email' ? undefined : '_blank'}
-                    rel={card.id === 'email' ? undefined : 'noopener noreferrer'}
-                    className="block break-all text-sm font-medium text-primary hover:underline"
-                  >
-                    {card.value}
-                  </a>
-                ) : (
-                  <p className="break-all text-sm font-medium text-text-muted">
-                    {card.value}
-                  </p>
-                )}
-
-                {card.showCopy && card.value && (
-                  <button
-                    onClick={handleCopyEmail}
-                    className="mt-4 flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-medium text-text transition-colors hover:bg-border hover:text-primary"
-                  >
-                    {copied ? (
-                      <>
-                        <Check className="h-3.5 w-3.5" />
-                        <span>Copied!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="h-3.5 w-3.5" />
-                        <span>Copy Email</span>
-                      </>
-                    )}
-                  </button>
-                )}
               </motion.div>
             );
           })}

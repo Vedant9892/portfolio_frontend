@@ -150,26 +150,25 @@ export default function Travel() {
   }
 
   return (
-    <div className="mx-auto max-w-content px-4 py-16 sm:px-6">
+    <div className="mx-auto max-w-content px-4 py-20 sm:px-6">
       {heroSlides.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="mb-10"
+          className="mb-16"
         >
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-surface">
-            {/* Image slider layer: keeps same aspect ratio & overlay */}
+          <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-surface shadow-2xl">
             <div className="absolute inset-0">
               <AnimatePresence mode="wait">
                 {heroSlides.map((slide, index) =>
                   index === currentSlide ? (
                     <motion.div
                       key={index}
-                      initial={{ opacity: 0, scale: 1.02 }}
+                      initial={{ opacity: 0, scale: 1.05 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.98 }}
-                      transition={{ duration: 0.6 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
                       className="absolute inset-0"
                     >
                       <img
@@ -180,34 +179,33 @@ export default function Travel() {
                         referrerPolicy="no-referrer"
                         className="h-full w-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/40 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                     </motion.div>
                   ) : null
                 )}
               </AnimatePresence>
             </div>
-            {/* Text layer: synced with currentSlide */}
             <AnimatePresence mode="wait">
               {heroSlides.map((slide, index) =>
                 index === currentSlide ? (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 12 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.4 }}
-                    className="relative z-10 flex h-64 flex-col justify-end p-6 sm:h-80 sm:p-8"
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="relative z-10 flex h-72 flex-col justify-end p-8 sm:h-96 sm:p-10"
                   >
                     {slide.subheading && (
-                      <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-primary">
+                      <p className="mb-2 inline-block rounded-full bg-primary/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm">
                         {slide.subheading}
                       </p>
                     )}
-                    <h1 className="mb-1 text-2xl font-bold text-text sm:text-3xl">
+                    <h1 className="mb-3 text-3xl font-extrabold text-white drop-shadow-lg sm:text-4xl lg:text-5xl">
                       {slide.heading}
                     </h1>
                     {slide.description && (
-                      <p className="max-w-xl text-sm text-text-muted sm:text-base">
+                      <p className="max-w-2xl text-base leading-relaxed text-white/90 drop-shadow-md sm:text-lg">
                         {slide.description}
                       </p>
                     )}
@@ -215,24 +213,38 @@ export default function Travel() {
                 ) : null
               )}
             </AnimatePresence>
+            {heroSlides.length > 1 && (
+              <div className="absolute bottom-6 right-6 z-20 flex gap-2">
+                {heroSlides.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`h-2 rounded-full transition-all ${
+                      index === currentSlide ? 'w-8 bg-white' : 'w-2 bg-white/50 hover:bg-white/75'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </motion.div>
       )}
 
       <motion.div
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="mb-10"
+        transition={{ duration: 0.4 }}
+        className="mb-12"
       >
-        <h1 className="mb-2 text-3xl font-bold text-text">Travel Journal</h1>
-        <p className="text-text-muted">
+        <h1 className="mb-3 text-4xl font-bold tracking-tight text-text sm:text-5xl">Travel Journal</h1>
+        <p className="text-lg text-text-muted">
           Places I&apos;ve visited and journeys I want to remember.
         </p>
       </motion.div>
 
       {trips.length === 0 && (
-        <p className="text-text-muted">
+        <p className="text-center text-text-muted">
           No travel entries yet. Seed the Travel collection in the backend to see journeys here.
         </p>
       )}
@@ -241,49 +253,50 @@ export default function Travel() {
           variants={container}
           initial="hidden"
           animate="visible"
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
         >
           {trips.map((trip) => (
             <Link key={trip._id} to={`/travel/${trip.slug}`}>
               <motion.article
                 variants={cardMotion}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-shadow hover:shadow-md"
+                whileHover={{ y: -6, scale: 1.02 }}
+                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-lg transition-all hover:border-primary/30 hover:shadow-2xl"
               >
                 {trip.coverImage && (
-                  <div className="relative h-44 w-full overflow-hidden bg-background">
+                  <div className="relative h-48 w-full overflow-hidden bg-background">
                     <img
                       src={normalizeImageUrl(trip.coverImage)}
                       alt={trip.title}
                       loading="lazy"
                       decoding="async"
                       referrerPolicy="no-referrer"
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
                   </div>
                 )}
-                <div className="flex flex-1 flex-col p-5">
-                  <div className="mb-2 flex items-start justify-between gap-2">
-                    <h2 className="text-base font-semibold text-text line-clamp-2">
+                <div className="flex flex-1 flex-col p-6">
+                  <div className="mb-3 flex items-start justify-between gap-2">
+                    <h2 className="text-lg font-bold text-text line-clamp-2 transition-colors group-hover:text-primary">
                       {trip.title}
                     </h2>
                     {trip.tripType && (
-                      <span className="whitespace-nowrap rounded-full bg-border px-2 py-0.5 text-xs font-medium text-text-muted">
+                      <span className="whitespace-nowrap rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
                         {trip.tripType === 'multi-day' ? 'Multi-day' : 'One-day'}
                       </span>
                     )}
                   </div>
                   {trip.location?.name && (
-                    <p className="mb-1 text-xs font-medium text-primary">
+                    <p className="mb-2 text-sm font-semibold text-primary">
                       {trip.location.name}
                     </p>
                   )}
                   {trip.duration && (
-                    <p className="mb-3 text-xs text-text-muted">{trip.duration}</p>
+                    <p className="mb-3 text-xs font-medium text-text-muted">{trip.duration}</p>
                   )}
                   {trip.shortDescription && (
-                    <p className="mb-4 text-sm text-text-muted line-clamp-3">
+                    <p className="text-sm leading-relaxed text-text-muted line-clamp-3">
                       {trip.shortDescription}
                     </p>
                   )}

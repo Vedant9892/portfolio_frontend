@@ -38,42 +38,55 @@ const itemMotion = {
 
 export default function Skills() {
   return (
-    <div className="mx-auto max-w-content px-4 py-16 sm:px-6">
+    <div className="mx-auto max-w-content px-4 py-20 sm:px-6">
       <motion.div
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="mb-10"
+        transition={{ duration: 0.4 }}
+        className="mb-12 text-center"
       >
-        <h1 className="mb-2 text-3xl font-bold text-text">Skills</h1>
-        <p className="text-text-muted">Technologies and tools I work with.</p>
+        <h1 className="mb-3 text-4xl font-bold tracking-tight text-text sm:text-5xl">Skills & Technologies</h1>
+        <p className="mx-auto max-w-2xl text-lg text-text-muted">
+          A comprehensive overview of the technologies and tools I use to build modern applications.
+        </p>
       </motion.div>
 
       <motion.div
         variants={container}
         initial="hidden"
         animate="visible"
-        className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2"
       >
         {skillsData.map(({ category, items }) => (
           <motion.div
             key={category}
             variants={itemMotion}
-            whileHover={{ y: -2 }}
-            className="rounded-xl border border-border bg-surface p-6 shadow-sm transition-shadow hover:shadow-md"
+            whileHover={{ y: -4, scale: 1.02 }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+            className="group relative overflow-hidden rounded-2xl border border-border bg-surface p-8 shadow-lg transition-all hover:border-primary/30 hover:shadow-2xl"
           >
-            <h2 className="mb-4 text-lg font-semibold text-text">{category}</h2>
-            <div className="flex flex-wrap gap-2">
-              {items.map((skill) => (
-                <motion.span
-                  key={skill}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-text transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary"
-                >
-                  {skill}
-                </motion.span>
-              ))}
+            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-primary/5 transition-all group-hover:scale-150 group-hover:bg-primary/10"></div>
+            <div className="relative">
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all group-hover:scale-110 group-hover:bg-primary/20">
+                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold text-text transition-colors group-hover:text-primary">{category}</h2>
+              </div>
+              <div className="flex flex-wrap gap-2.5">
+                {items.map((skill) => (
+                  <motion.span
+                    key={skill}
+                    whileHover={{ scale: 1.08, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="cursor-default rounded-lg border-2 border-border bg-background px-4 py-2 text-sm font-semibold text-text shadow-sm transition-all hover:border-primary hover:bg-primary/5 hover:text-primary hover:shadow-md"
+                  >
+                    {skill}
+                  </motion.span>
+                ))}
+              </div>
             </div>
           </motion.div>
         ))}

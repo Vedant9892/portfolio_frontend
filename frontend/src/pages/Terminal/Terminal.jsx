@@ -91,49 +91,76 @@ export default function Terminal() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <h1 className="mb-2 text-3xl font-bold text-text">Terminal</h1>
-        <p className="mb-4 text-text-muted">
-          Type a command and press Enter. Try &quot;help&quot;.
+        <h1 className="mb-4 text-4xl font-bold text-text">Terminal</h1>
+        <p className="mb-8 text-lg text-text-muted">
+          Type a command and press Enter. Try &quot;help&quot; to get started.
         </p>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1, duration: 0.3 }}
-          onClick={handleTerminalClick}
-          role="application"
-          aria-label="Terminal"
-          className="min-h-[320px] cursor-text overflow-hidden rounded-xl border border-slate-600 bg-slate-900 p-4 font-mono text-sm text-slate-200 shadow-lg"
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          className="overflow-hidden rounded-2xl shadow-2xl"
         >
+          <div className="flex items-center justify-between bg-gray-800 px-4 py-3">
+            <div className="flex gap-2">
+              <div className="h-3 w-3 rounded-full bg-red-500"></div>
+              <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+              <div className="h-3 w-3 rounded-full bg-green-500"></div>
+            </div>
+            <div className="text-xs font-medium text-gray-400">terminal</div>
+            <div className="w-16"></div>
+          </div>
+
           <div
-            className="terminal-v1-scroll max-h-[400px] overflow-y-auto pr-2"
-            ref={scrollRef}
+            onClick={handleTerminalClick}
+            role="application"
+            aria-label="Terminal"
+            className="min-h-[420px] cursor-text bg-black p-6 font-mono text-sm"
           >
-            {history.map((entry, index) => (
-              <div key={index} className="mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-emerald-400">$</span>
-                  <span>{entry.command}</span>
+            <div
+              className="terminal-v1-scroll pr-2"
+              ref={scrollRef}
+            >
+              {history.length === 0 && (
+                <div className="mb-4 text-green-500">
+                  <p>Welcome to Portfolio Terminal v1.0.0</p>
+                  <p className="mt-1 text-green-400/70">Type &quot;help&quot; for available commands.</p>
                 </div>
-                <div className="ml-5 whitespace-pre-wrap break-words text-slate-300">
-                  {entry.output}
+              )}
+              {history.map((entry, index) => (
+                <div key={index} className="mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-green-500">guest@portfolio</span>
+                    <span className="text-green-400">:</span>
+                    <span className="font-bold text-blue-400">~</span>
+                    <span className="text-green-500">$</span>
+                    <span className="text-green-300">{entry.command}</span>
+                  </div>
+                  <div className="ml-1 mt-1 whitespace-pre-wrap break-words text-green-400/90">
+                    {entry.output}
+                  </div>
                 </div>
+              ))}
+              <div className="mt-2 flex items-center gap-2">
+                <span className="font-bold text-green-500">guest@portfolio</span>
+                <span className="text-green-400">:</span>
+                <span className="font-bold text-blue-400">~</span>
+                <span className="text-green-500">$</span>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={currentInput}
+                  onChange={(e) => setCurrentInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className="terminal-v1-input flex-1 min-w-0"
+                  spellCheck={false}
+                  autoComplete="off"
+                  autoFocus
+                  aria-label="Command input"
+                />
+                <span className="cursor-blink ml-0.5 inline-block h-5 w-2 bg-green-500"></span>
               </div>
-            ))}
-            <div className="mt-2 flex items-center gap-2">
-              <span className="text-emerald-400">$</span>
-              <input
-                ref={inputRef}
-                type="text"
-                value={currentInput}
-                onChange={(e) => setCurrentInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className="terminal-v1-input flex-1 min-w-0 bg-transparent outline-none placeholder:text-slate-500"
-                spellCheck={false}
-                autoComplete="off"
-                autoFocus
-                aria-label="Command input"
-              />
             </div>
           </div>
         </motion.div>
