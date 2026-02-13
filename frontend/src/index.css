@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme: CSS variables for light/dark. ThemeContext toggles .dark on html + body. */
+:root {
+  --text: #1a1a1a;
+  --text-muted: #555;
+  --bg: #fafafa;
+  --surface: #fff;
+  --border: #e5e5e5;
+  --link: #2563eb;
+}
+
+.dark {
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --border: #334155;
+  --link: #60a5fa;
+}
+
+@layer base {
+  body {
+    @apply antialiased;
+    font-family: system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    color: var(--text);
+    background: var(--bg);
+    transition: background 0.2s, color 0.2s;
+  }
+  a {
+    color: var(--link);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+/* Terminal v1 (interactive) – keep for Terminal page */
+.terminal-v1-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+}
+.terminal-v1-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: #e2e8f0;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+}
