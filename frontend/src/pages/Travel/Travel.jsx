@@ -158,17 +158,17 @@ export default function Travel() {
           transition={{ duration: 0.4 }}
           className="mb-16"
         >
-          <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-surface shadow-2xl">
+          <div className="group relative overflow-hidden rounded-3xl border-2 border-border bg-surface shadow-2xl">
             <div className="absolute inset-0">
               <AnimatePresence mode="wait">
                 {heroSlides.map((slide, index) =>
                   index === currentSlide ? (
                     <motion.div
                       key={index}
-                      initial={{ opacity: 0, scale: 1.05 }}
+                      initial={{ opacity: 0, scale: 1.1 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                      exit={{ opacity: 0, scale: 1.05 }}
+                      transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
                       className="absolute inset-0"
                     >
                       <img
@@ -190,42 +190,77 @@ export default function Travel() {
                 index === currentSlide ? (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
                     className="relative z-10 flex h-72 flex-col justify-end p-8 sm:h-96 sm:p-10"
                   >
                     {slide.subheading && (
-                      <p className="mb-2 inline-block rounded-full bg-primary/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm">
+                      <motion.p
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5, duration: 0.4 }}
+                        className="mb-2 inline-block rounded-full bg-primary/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm"
+                      >
                         {slide.subheading}
-                      </p>
+                      </motion.p>
                     )}
-                    <h1 className="mb-3 text-3xl font-extrabold text-white drop-shadow-lg sm:text-4xl lg:text-5xl">
+                    <motion.h1
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6, duration: 0.5 }}
+                      className="mb-3 text-3xl font-extrabold text-white drop-shadow-lg sm:text-4xl lg:text-5xl"
+                    >
                       {slide.heading}
-                    </h1>
+                    </motion.h1>
                     {slide.description && (
-                      <p className="max-w-2xl text-base leading-relaxed text-white/90 drop-shadow-md sm:text-lg">
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.7, duration: 0.5 }}
+                        className="max-w-2xl text-base leading-relaxed text-white/90 drop-shadow-md sm:text-lg"
+                      >
                         {slide.description}
-                      </p>
+                      </motion.p>
                     )}
                   </motion.div>
                 ) : null
               )}
             </AnimatePresence>
             {heroSlides.length > 1 && (
-              <div className="absolute bottom-6 right-6 z-20 flex gap-2">
-                {heroSlides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`h-2 rounded-full transition-all ${
-                      index === currentSlide ? 'w-8 bg-white' : 'w-2 bg-white/50 hover:bg-white/75'
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
+              <>
+                <button
+                  onClick={() => setCurrentSlide((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1))}
+                  className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full border-2 border-white/30 bg-black/30 p-2 text-white backdrop-blur-sm transition-all hover:bg-black/50 hover:border-white/50 hover:scale-110 sm:left-6"
+                  aria-label="Previous slide"
+                >
+                  <svg className="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => setCurrentSlide((prev) => (prev === heroSlides.length - 1 ? 0 : prev + 1))}
+                  className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full border-2 border-white/30 bg-black/30 p-2 text-white backdrop-blur-sm transition-all hover:bg-black/50 hover:border-white/50 hover:scale-110 sm:right-6"
+                  aria-label="Next slide"
+                >
+                  <svg className="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                <div className="absolute bottom-6 right-6 z-20 flex gap-2">
+                  {heroSlides.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentSlide(index)}
+                      className={`h-2 rounded-full transition-all ${
+                        index === currentSlide ? 'w-8 bg-white shadow-lg' : 'w-2 bg-white/50 hover:bg-white/75'
+                      }`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </motion.div>
